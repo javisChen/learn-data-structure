@@ -1,5 +1,6 @@
 package com.kt;
 
+import java.util.Arrays;
 import java.util.StringJoiner;
 
 public class SequenceStorageStructure<T> {
@@ -26,7 +27,7 @@ public class SequenceStorageStructure<T> {
         if (size == elements.length - 1) {
             throw new RuntimeException("线性表已满");
         }
-        if (i < 0 || i > elements.length - 1) {
+        if (i < 0 || i > size) {
             throw new RuntimeException("非法的下标位置");
         }
         if (i != elements.length - 1) {
@@ -56,7 +57,7 @@ public class SequenceStorageStructure<T> {
     }
 
     public Object[] getElements() {
-        return elements;
+        return Arrays.copyOf(elements, size);
     }
 
     public static void main(String[] args) {
@@ -64,14 +65,15 @@ public class SequenceStorageStructure<T> {
         structure.addElement(1);
         structure.addElement(2);
         structure.addElement(3);
-        structure.addElement(4);
-        structure.addElement(5);
-        structure.addElement(8, 9);
+        structure.addElement(44);
+        structure.addElement(22);
         Object[] elements = structure.getElements();
         print(elements);
-        structure.removeElement(2);
-        System.out.println("============================");
+        structure.addElement(33, 3);
         print(elements);
+//        structure.removeElement(2);
+//        System.out.println("============================");
+//        print(elements);
     }
 
     private static void print(Object[] elements) {
