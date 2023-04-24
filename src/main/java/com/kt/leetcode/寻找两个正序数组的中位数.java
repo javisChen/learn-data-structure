@@ -1,4 +1,4 @@
-package com.kt;
+package com.kt.leetcode;
 
 import java.util.Arrays;
 

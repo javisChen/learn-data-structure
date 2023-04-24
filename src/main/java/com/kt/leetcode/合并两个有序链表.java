@@ -1,4 +1,4 @@
-package com.kt.leetcode.链表;
+package com.kt.leetcode;
 
 public class 合并两个有序链表 {
     public static void main(String[] args) {
