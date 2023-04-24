@@ -1,8 +1,6 @@
 package com.kt;
 
 
-import java.util.NoSuchElementException;
-
 /**
  * 线性表单链表实现
  *
@@ -13,12 +11,12 @@ public class LinkedList<T> implements Collection<T> {
     /**
      * 头节点
      */
-    private Node<T> first;
+    private Node<T> head;
 
     /**
      * 尾结点
      */
-    private Node<T> last;
+    private Node<T> tail;
 
     /**
      * 链表长度
@@ -32,20 +30,17 @@ public class LinkedList<T> implements Collection<T> {
      */
     @Override
     public T getElement(int index) {
-        if (index > size) {
-            throw new NoSuchElementException();
+        if (size == 0) {
+            return null;
         }
-        Node<T> node = first;
-        int i = 0;
-        while (i < size) {
-            if (i == index) {
+        Node<T> node = head;
+        int c = 0;
+        while (node != null) {
+            if (c == index) {
                 return node.data;
             }
-            if (node.next == null) {
-                return null;
-            }
             node = node.next;
-            i++;
+            c++;
         }
         return null;
     }
@@ -58,14 +53,17 @@ public class LinkedList<T> implements Collection<T> {
      */
     @Override
     public boolean addElement(T element) {
-        Node<T> last = this.last;
-        Node<T> newNode = new Node<>(element, null);
-        this.last = newNode;
+        Node<T> node = new Node<>(element, null, null);
         if (size == 0) {
-            this.first = newNode;
+            tail = node;
+            head = node;
+            head.next = tail;
+            tail.pre = head;
         } else {
-            last.next = this.last;
+            node.pre = tail;
+            tail.next = node;
         }
+        tail = node;
         size++;
         return true;
     }
@@ -79,20 +77,6 @@ public class LinkedList<T> implements Collection<T> {
      */
     @Override
     public boolean addElement(T element, int index) {
-        if (index < 0 || index > size) {
-            throw new ArrayIndexOutOfBoundsException(index);
-        }
-        if (index == size) {
-            addElement(element);
-            return true;
-        }
-        Node<T> prev = this.first;
-        int i = 0;
-        while (i < index - 1) {
-            prev = prev.next;
-            i++;
-        }
-        prev.next = new Node<>(element, prev.next);
         return true;
     }
 
@@ -105,35 +89,43 @@ public class LinkedList<T> implements Collection<T> {
     @Override
     public boolean removeElement(T element) {
         if (size == 0) {
-            throw new NoSuchElementException();
+            return false;
         }
-        if (this.first.data.equals(element)) {
-            this.first = first.next;
-            size--;
-        } else {
-            Node<T> curr = first;
-            while (curr.next != null) {
-                if (curr.next.data.equals(element)) {
-                    curr.next = curr.next.next;
-                    size--;
-                    return true;
-                }
-                curr = curr.next;
+        if (head.data.equals(element)) {
+            head = head.next;
+            return true;
+        }
+        Node<T> node = head.next;
+        while (node != null) {
+            if (node.data.equals(element)) {
+                node.pre.next = node.next;
+                node.next.pre = node.pre;
+                return true;
             }
+            node = node.next;
         }
-        return false;
+        return true;
     }
 
     @Override
     public Object[] getElements() {
-        Object[] result = new Object[size];
-        int i = 0;
-        Node<T> x = first;
-        while (x != null) {
-            result[i++] = x.data;
-            x = x.next;
+        return null;
+    }
+
+    public void print() {
+        if (size == 0) {
+            return;
         }
-        return result;
+        Node<T> node = head;
+        while (true) {
+            System.out.print(node.data);
+            node = node.next;
+            if (node == null) {
+                break;
+            }
+            System.out.print(" -> ");
+        }
+        System.out.println();
     }
 
 
@@ -142,7 +134,7 @@ public class LinkedList<T> implements Collection<T> {
      *
      * @param <T>
      */
-    public class Node<T> {
+    public static class Node<T> {
         /**
          * 数据域
          */
@@ -153,25 +145,44 @@ public class LinkedList<T> implements Collection<T> {
          */
         private Node<T> next;
 
-        public Node(T data, Node<T> next) {
+        /**
+         * 后继节点
+         */
+        private Node<T> pre;
+
+        public Node(T data, Node<T> next, Node<T> pre) {
             this.data = data;
             this.next = next;
+            this.pre = pre;
         }
 
-        public Node<T> getNext() {
-            return next;
-        }
+    }
 
-        public void setNext(Node<T> next) {
-            this.next = next;
-        }
+    public static void main(String[] args) {
+//        java.util.LinkedList<Integer> integers = new java.util.LinkedList<>();
+//        integers.add(1);
+//        integers.add(2);
+//        integers.add(1);
+//        integers.remove(Integer.valueOf(1));
+//        for (Integer integer : integers) {
+//            System.out.print(integer);
+//        }
+        System.out.println();
+        System.out.println("==========");
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        linkedList.addElement(1);
+        linkedList.addElement(2);
+        linkedList.addElement(4);
+        linkedList.addElement(5);
+        linkedList.addElement(8);
+        // 打印初始化链表
+        linkedList.print();
 
-        public T getData() {
-            return data;
-        }
+        // 获取某个下标的元素
+        System.out.println(linkedList.getElement(2));
 
-        public void setData(T data) {
-            this.data = data;
-        }
+        // 删除某个元素
+        linkedList.removeElement(8);
+        linkedList.print();
     }
 }

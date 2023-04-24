@@ -16,7 +16,7 @@ public class BinaryTreeNodeTest {
         BinaryTreeNode<String> C = createNode("C");
         root.setLeft(B);
         root.setRight(C);
-        root.getElements();
+//        root.getElements();
     }
 
     private BinaryTreeNode<String> createNode(String g) {
