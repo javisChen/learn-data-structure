@@ -33,7 +33,7 @@ public class 最长回文子串 {
         if (length == 1) {
             return s;
         }
-        String maxText = "";
+        String maxText = String.valueOf(s.charAt(0));
         // 存储字符出现过的所有下标，例如：aacabdkacaa，a一共出现了4次，分别是0、1、3、7、9、10
         HashMap<Character, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < length; i++) {
